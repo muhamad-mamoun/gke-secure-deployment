@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: python
+  template:
+    metadata:
+      labels:
+        app: python
+    spec:
+      containers:
+        - name: python
+          image: us-central1-docker.pkg.dev/level-agent-460100-t6/cluster-private-repo/python-app
+          ports:
+            - containerPort: 5000
+          resources:
+          env:
+            - name: PORT
+              value: "5000"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_HOST
+              value: "redis-svc.default"

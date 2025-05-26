@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-svc
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - port: 6379
+      name: redis
+  selector:
+    db: redis
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+spec:
+  selector:
+    matchLabels:
+      db: redis
+  serviceName: "redis-svc"
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        db: redis
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: redis
+          image: us-central1-docker.pkg.dev/level-agent-460100-t6/cluster-private-repo/redis
+          ports:
+            - containerPort: 80
+              name: web
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: redis-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
