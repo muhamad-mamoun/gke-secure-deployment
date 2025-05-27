@@ -8,7 +8,7 @@ This repository provides an implementation for securely deploying a Python web a
 
 ## Architecture
 
-![GKE Secure Deployment Architecture](Docs/Architecture.png)
+![GKE Secure Deployment Architecture](Docs/Architecture.jpeg)
 
 The deployment consists of the following core components:
 
